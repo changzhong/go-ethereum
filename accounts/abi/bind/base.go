@@ -211,6 +211,7 @@ func (c *BoundContract) Call(opts *CallOpts, results *[]interface{}, method stri
 // Transact invokes the (paid) contract method with params as input values.
 func (c *BoundContract) Transact(opts *TransactOpts, method string, params ...interface{}) (*types.Transaction, error) {
 	// Otherwise pack up the parameters and invoke the contract
+		fmt.Println("==========method============", method)
 	input, err := c.abi.Pack(method, params...)
 	if err != nil {
 		return nil, err
