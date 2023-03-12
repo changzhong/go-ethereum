@@ -381,6 +381,7 @@ func (c *BoundContract) transact(opts *TransactOpts, contract *common.Address, i
 	} else {
 		// Only query for basefee if gasPrice not specified
 		if head, errHead := c.transactor.HeaderByNumber(ensureContext(opts.Context), nil); errHead != nil {
+			fmt.Printf("\n384 err:%s\n", errHead)
 			return nil, errHead
 		} else if head.BaseFee != nil {
 			rawTx, err = c.createDynamicTx(opts, contract, input, head)
@@ -390,6 +391,7 @@ func (c *BoundContract) transact(opts *TransactOpts, contract *common.Address, i
 		}
 	}
 	if err != nil {
+		fmt.Printf("\n394 err:%s\n", err)
 		return nil, err
 	}
 	// Sign the transaction and schedule it for execution
@@ -398,12 +400,14 @@ func (c *BoundContract) transact(opts *TransactOpts, contract *common.Address, i
 	}
 	signedTx, err := opts.Signer(opts.From, rawTx)
 	if err != nil {
+		fmt.Printf("\n403 err:%s\n", err)
 		return nil, err
 	}
 	if opts.NoSend {
 		return signedTx, nil
 	}
 	if err := c.transactor.SendTransaction(ensureContext(opts.Context), signedTx); err != nil {
+		fmt.Printf("\n410 err:%s\n", err)
 		return nil, err
 	}
 	return signedTx, nil
@@ -528,10 +532,4 @@ func (c *BoundContract) UnpackLogIntoMap(out map[string]interface{}, event strin
 }
 
 // ensureContext is a helper method to ensure a context is not nil, even if the
-// user specified it as such.
-func ensureContext(ctx context.Context) context.Context {
-	if ctx == nil {
-		return context.Background()
-	}
-	return ctx
-}
+// 
