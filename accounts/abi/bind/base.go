@@ -213,6 +213,8 @@ func (c *BoundContract) Transact(opts *TransactOpts, method string, params ...in
 	// Otherwise pack up the parameters and invoke the contract
 		fmt.Println("==========method============", method)
 	input, err := c.abi.Pack(method, params...)
+			fmt.Printf("==========method============%s, %+v, %s", method, input, err)
+
 	if err != nil {
 		return nil, err
 	}
